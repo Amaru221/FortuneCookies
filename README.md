@@ -1,11 +1,4 @@
-# Tutorials, Fortune Cookies & Doctrine Queries
-
-Well hi there! This repository holds the code and script
-for the [Doctrine Queries Tutorials](https://symfonycasts.com/screencast/doctrine-queries) on SymfonyCasts.
-
 ## Setup
-
-If you've just downloaded the code, congratulations!!
 
 To get it working, follow these steps:
 
@@ -95,15 +88,4 @@ npm install
 npm run watch
 ```
 
-## Have Ideas, Feedback or an Issue?
 
-If you have suggestions or questions, please feel free to
-open an issue on this repository or comment on the course
-itself. We're watching both :).
-
-## Thanks!
-
-And as always, thanks so much for your support and letting
-us do what we love!
-
-<3 Your friends at SymfonyCasts
