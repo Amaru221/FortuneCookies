@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,53 @@ class CategoryRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Category []
+     */
+    public function findAllOrdered(): array{
+
+        return $this->createQueryBuilder('category')
+        ->orderBy('category.name', 'DESC')
+        ->getQuery()
+        ->getResult();
+
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return Category []
+     */
+    public function search(string $term): array{
+        return $this->createQueryBuilder('category')
+        ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term')
+        ->setParameter('term', '%'.$term.'%')
+        ->addOrderBy('category.name', Criteria::DESC)
+        ->getQuery()
+        ->getResult();
+    }
+
+
+
+
+    /**
+     * Consulta mediante DQL
+     *
+     * @return Category []
+     */
+    public function findAllOrderedDQL(): array{ 
+        
+        $dql = 'SELECT category FROM App\Entity\Category as category ORDER BY category.name DESC';
+
+        $query = $this->getEntityManager()->createQuery($dql)->getResult();
+        return $query;
+
+
+    
     }
 
 //    /**
