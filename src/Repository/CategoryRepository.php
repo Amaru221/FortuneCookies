@@ -60,12 +60,22 @@ class CategoryRepository extends ServiceEntityRepository
      * @return Category []
      */
     public function search(string $term): array{
+
         return $this->createQueryBuilder('category')
-        ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term')
+        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
+        ->andWhere('fortuneCookie.discontinued = false')
         ->setParameter('term', '%'.$term.'%')
-        ->addOrderBy('category.name', Criteria::DESC)
+        ->orderBy('category.name', Criteria::DESC)
         ->getQuery()
         ->getResult();
+        /*Method without leftjoin*/
+        // return $this->createQueryBuilder('category')
+        // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term')
+        // ->setParameter('term', '%'.$term.'%')
+        // ->addOrderBy('category.name', Criteria::DESC)
+        // ->getQuery()
+        // ->getResult();
     }
 
 
@@ -84,7 +94,6 @@ class CategoryRepository extends ServiceEntityRepository
         return $query;
 
 
-    
     }
 
 //    /**
