@@ -62,9 +62,9 @@ class CategoryRepository extends ServiceEntityRepository
     public function search(string $term): array{
 
         return $this->createQueryBuilder('category')
+        ->addSelect('fortuneCookie')
         ->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
-        ->andWhere('fortuneCookie.discontinued = false')
         ->setParameter('term', '%'.$term.'%')
         ->orderBy('category.name', Criteria::DESC)
         ->getQuery()
