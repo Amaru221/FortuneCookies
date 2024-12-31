@@ -96,6 +96,23 @@ class CategoryRepository extends ServiceEntityRepository
 
     }
 
+    /**
+     * Consuta que reduce la doble query para una categoria a una unica query
+     *
+     * @param integer $id
+     * @return Category
+     */
+    public function findWithFortunesJoin(int $id): Category{
+        return $this->createQueryBuilder('category')
+        ->addSelect('fortuneCookie')
+        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        ->andWhere('category.id = :id')
+        ->setParameter('id', $id)
+        ->getQuery()
+        ->getOneOrNullResult();
+    
+    }
+
 //    /**
 //     * @return Category[] Returns an array of Category objects
 //     */
