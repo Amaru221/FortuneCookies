@@ -40,7 +40,7 @@ class FortuneCookieRepository extends ServiceEntityRepository
         }
     }
 
-    public function countNumberPrintedForCategory(Category $category): int {
+    public function countByNumberPrintedForCategory(Category $category): int {
         return $this->createQueryBuilder('fortuneCookie')
             ->select('SUM(fortuneCookie.numberPrinted) AS fortunesPrinted')
             ->andWhere('fortuneCookie.category = :category')
