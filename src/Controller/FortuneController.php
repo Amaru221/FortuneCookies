@@ -48,5 +48,6 @@ class FortuneController extends AbstractController
             'categoryName' => $result['name'],
 
         ]);
+        
     }
 }
