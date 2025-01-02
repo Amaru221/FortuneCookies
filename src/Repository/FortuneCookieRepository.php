@@ -40,13 +40,18 @@ class FortuneCookieRepository extends ServiceEntityRepository
         }
     }
 
-    public function countByNumberPrintedForCategory(Category $category): int {
-        return $this->createQueryBuilder('fortuneCookie')
+    public function countByNumberPrintedForCategory(Category $category): array {
+        $result = $this->createQueryBuilder('fortuneCookie')
             ->select('SUM(fortuneCookie.numberPrinted) AS fortunesPrinted')
+            ->innerJoin('fortuneCookie.category', 'category')
+            ->addSelect('AVG(fortuneCookie.numberPrinted) fortunesAverage')
+            ->addSelect('category.name')
             ->andWhere('fortuneCookie.category = :category')
             ->setParameter('category', $category)
             ->getQuery()
-            ->getSingleScalarResult();
+            ->getSingleResult();
+
+            return $result;
     }
 
 //    /**
