@@ -3,9 +3,10 @@
 namespace App\Repository;
 
 use App\Entity\Category;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Category>
@@ -61,14 +62,24 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function search(string $term): array{
 
-        return $this->createQueryBuilder('category')
-        ->addSelect('fortuneCookie')
-        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        $qb = $this->createQueryBuilder('category');
+        // ->addSelect('fortuneCookie')
+        // ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
+        // ->setParameter('term', '%'.$term.'%')
+        // ->orderBy('category.name', Criteria::DESC)
+        // ->getQuery()
+        // ->getResult();
+
+        return $this->addFortuneCookieJoinAndSelect($qb)
         ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
         ->setParameter('term', '%'.$term.'%')
         ->orderBy('category.name', Criteria::DESC)
         ->getQuery()
         ->getResult();
+
+
+
         /*Method without leftjoin*/
         // return $this->createQueryBuilder('category')
         // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term')
@@ -111,6 +122,16 @@ class CategoryRepository extends ServiceEntityRepository
         ->getQuery()
         ->getOneOrNullResult();
     
+    }
+
+    public function addFortuneCookieJoinAndSelect(QueryBuilder $qb) {
+        
+        return $qb
+        ->addSelect('fortuneCookie')
+        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        ;
+        
+
     }
 
 //    /**
