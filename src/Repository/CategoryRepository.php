@@ -117,7 +117,7 @@ class CategoryRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('category');
 
         return $this->addFortuneCookieJoinAndSelect($qb)
-        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        //->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->andWhere('category.id = :id')
         ->setParameter('id', $id)
         ->getQuery()
@@ -133,7 +133,7 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     public function addOrderByCategoryName(QueryBuilder $qb = null) :QueryBuilder{
-        return ($qb ?? $this->createQueryBuilder('categoryName'))
+        return ($qb ?? $this->createQueryBuilder('category'))
         ->orderBy('category.name', Criteria::DESC);
     }
 
