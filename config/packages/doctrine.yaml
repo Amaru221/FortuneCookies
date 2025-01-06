@@ -16,6 +16,8 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        filters:
+            fortuneCookie_discontinued: App\Doctrine\DiscontinuedFilter
 
 when@test:
     doctrine:
