@@ -62,14 +62,7 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function search(string $term): array{
 
-        $qb = $this->createQueryBuilder('category');
-        // ->addSelect('fortuneCookie')
-        // ->leftJoin('category.fortuneCookies', 'fortuneCookie')
-        // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
-        // ->setParameter('term', '%'.$term.'%')
-        // ->orderBy('category.name', Criteria::DESC)
-        // ->getQuery()
-        // ->getResult();
+        $qb = $this->addOrderByCategoryName();
 
         return $this->addFortuneCookieJoinAndSelect($qb)
         ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
@@ -78,8 +71,15 @@ class CategoryRepository extends ServiceEntityRepository
         ->getQuery()
         ->getResult();
 
+        // ->addSelect('fortuneCookie')
+        // ->leftJoin('category.fortuneCookies', 'fortuneCookie')
+        // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
+        // ->setParameter('term', '%'.$term.'%')
+        // ->orderBy('category.name', Criteria::DESC)
+        // ->getQuery()
+        // ->getResult();
 
-
+    
         /*Method without leftjoin*/
         // return $this->createQueryBuilder('category')
         // ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term')
@@ -113,9 +113,10 @@ class CategoryRepository extends ServiceEntityRepository
      * @param integer $id
      * @return Category
      */
-    public function findWithFortunesJoin(int $id): Category{
-        return $this->createQueryBuilder('category')
-        ->addSelect('fortuneCookie')
+    public function findWithFortunesJoin(int $id): ?Category{
+        $qb = $this->createQueryBuilder('category');
+
+        return $this->addFortuneCookieJoinAndSelect($qb)
         ->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->andWhere('category.id = :id')
         ->setParameter('id', $id)
@@ -124,14 +125,16 @@ class CategoryRepository extends ServiceEntityRepository
     
     }
 
-    public function addFortuneCookieJoinAndSelect(QueryBuilder $qb) {
-        
-        return $qb
+    public function addFortuneCookieJoinAndSelect(QueryBuilder $qb = null) {     
+        return ($qb ?? $this->createQueryBuilder('category'))
         ->addSelect('fortuneCookie')
         ->leftJoin('category.fortuneCookies', 'fortuneCookie')
-        ;
-        
+        ;  
+    }
 
+    public function addOrderByCategoryName(QueryBuilder $qb = null) :QueryBuilder{
+        return ($qb ?? $this->createQueryBuilder('categoryName'))
+        ->orderBy('category.name', Criteria::DESC);
     }
 
 //    /**
