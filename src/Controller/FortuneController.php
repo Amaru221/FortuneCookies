@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Repository\CategoryRepository;
 use App\Repository\FortuneCookieRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,8 +14,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class FortuneController extends AbstractController
 {
     #[Route('/', name: 'app_homepage')]
-    public function index(Request $request, CategoryRepository $categoryRepository): Response
+    public function index(Request $request, CategoryRepository $categoryRepository, EntityManagerInterface $entityManagerInterface): Response
     {
+
+        $entityManagerInterface->getFilters()
+            ->enable('fortuneCookie_discontinued');
 
         $searchTerm = $request->query->get('q');
         if($searchTerm){
