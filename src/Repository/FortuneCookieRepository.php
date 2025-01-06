@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Category;
 use App\Entity\FortuneCookie;
 use App\Model\CategoryFortuneStats;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
@@ -69,6 +70,13 @@ class FortuneCookieRepository extends ServiceEntityRepository
             // ->getSingleResult();
 
             return $result;
+    }
+
+    public static function createFortuneCookieStillInProductionCriteria(): Criteria {
+        
+        return $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('discontinued', false));
+    
     }
 
 //    /**
