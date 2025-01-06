@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\CategoryRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategoryRepository;
+use App\Repository\FortuneCookieRepository;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 class Category
@@ -65,6 +67,20 @@ class Category
     {
         return $this->fortuneCookies;
     }
+
+
+   /**
+    * @return Collection<int, FortuneCookie>
+    */
+    public function getFortuneCookiesStillInProduction(): Collection
+    {
+        $criteria = FortuneCookieRepository::createFortuneCookieStillInProductionCriteria();
+
+        return $this->fortuneCookies->matching($criteria);
+
+
+    }
+
 
     public function addFortuneCookie(FortuneCookie $fortuneCookie): self
     {
