@@ -18,7 +18,8 @@ class FortuneController extends AbstractController
     {
 
         $entityManagerInterface->getFilters()
-            ->enable('fortuneCookie_discontinued');
+            ->enable('fortuneCookie_discontinued')
+            ->setParameter('discontinued', false);
 
         $searchTerm = $request->query->get('q');
         if($searchTerm){
