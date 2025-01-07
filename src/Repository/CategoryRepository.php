@@ -62,11 +62,14 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function search(string $term): array{
 
+        $termList = explode(' ', $term);
+
         $qb = $this->addOrderByCategoryName();
 
         return $this->addFortuneCookieJoinAndSelect($qb)
-        ->andWhere('category.name LIKE :term OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
+        ->andWhere('category.name LIKE :term OR category.name IN (:termList) OR category.iconKey LIKE :term OR fortuneCookie.fortune LIKE :term')
         ->setParameter('term', '%'.$term.'%')
+        ->setParameter('termList', $termList)
         ->orderBy('category.name', Criteria::DESC)
         ->getQuery()
         ->getResult();
