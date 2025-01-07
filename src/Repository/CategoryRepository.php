@@ -122,6 +122,7 @@ class CategoryRepository extends ServiceEntityRepository
         return $this->addFortuneCookieJoinAndSelect($qb)
         //->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->andWhere('category.id = :id')
+        ->orderBy('RAND()', Criteria::ASC)
         ->setParameter('id', $id)
         ->getQuery()
         ->getOneOrNullResult();
