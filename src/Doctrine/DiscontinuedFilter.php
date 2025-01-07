@@ -6,14 +6,13 @@ use Doctrine\ORM\Query\Filter\SQLFilter;
 
 class DiscontinuedFilter extends SQLFilter {
 
-    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias) {
-        // 
+    public function addFilterConstraint(ClassMetadata $targetEntity, $targetTableAlias) :string{
         if($targetEntity->getReflectionClass()->name !== FortuneCookie::class)
         {
             return '';
         }
 
-        return sprintf('%s.discontinued = false', $targetTableAlias);
+        return sprintf('%s.discontinued = %s', $targetTableAlias, $this->getParameter('discontinued'));
     }
 
 }
