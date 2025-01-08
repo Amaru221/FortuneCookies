@@ -1,5 +1,5 @@
 <?php
-
+namespace App\Doctrine; 
 use App\Entity\FortuneCookie;
 use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Filter\SQLFilter;
