@@ -50,8 +50,6 @@ class CategoryRepository extends ServiceEntityRepository
 
         $qb = $this->addGroupByCategory()
         ->addOrderBy('category.name', 'DESC')
-        ->addSelect('COUNT(fortuneCookie.id) AS fortuneCookiesTotal')
-        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->addGroupBy('category.id');
 
         
