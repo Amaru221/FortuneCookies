@@ -48,10 +48,14 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function findAllOrdered(): array{
 
-        return $this->createQueryBuilder('category')
+        $qb = $this->createQueryBuilder('category')
+        ->addSelect('COUNT(fortuneCookie.id) AS fortuneCookiesTotal')
+        ->leftJoin('category.fortuneCookies', 'fortuneCookie')
         ->orderBy('category.name', 'DESC')
-        ->getQuery()
-        ->getResult();
+        ->addGroupBy('category.id', Criteria::DESC);
+
+        $result = $qb->getQuery();
+        dd($result);
 
     }
 
